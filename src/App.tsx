@@ -1,17 +1,19 @@
-// Imports
+// ----------- Imports -----------
 import { useState } from "react";
 
+// ---------- Types ----------
+interface ToDo {
+	id: number;
+    text: string;
+	completed: boolean;
+}
+
 function App() {
-	// Variables
+	// ---------- Variables----------
 	const [toDos, setToDos] = useState<ToDo[]>([]);
-	const [textInput, setTextInput] = useState("");
+	const [textInput, setTextInput] = useState<string>("");
 
-	interface ToDo {
-		id: number;
-    	text: string;
-	}
-
-	// Logiques
+	// ----------- Logiques ----------
 	// Ajouter une tâche dans la liste
 	const addItem = () => {
 		const trimmed = textInput.trim();
@@ -20,6 +22,7 @@ function App() {
 		const newTodo: ToDo = {
 			id: Math.floor(Math.random() * 100),
 			text: trimmed,
+			completed: false,
 		};
 
 		setToDos([...toDos, newTodo]);
@@ -31,8 +34,7 @@ function App() {
 		setToDos((toDos) => toDos.filter((todo) => todo.id !== id));
  	};
 
-
-	// Modifier une ta^che
+	// Modifier une tâche
 	const updateItem = (id : number)=> {
 		const newText = prompt("Modifier la tâche :");
 
@@ -46,8 +48,22 @@ function App() {
 			)
 		);
  	};
+	// Cocher / décocher une tâche
+	const toggleTodo = (id: number) => {
+		setToDos(
+			toDos.map((todo) => {
+				if (todo.id === id) {
+				return {
+					...todo,
+					completed: !todo.completed,
+				};
+				}
+				return todo;
+			})
+		);
+	};
 
-	// Composants
+	// ------------ Component (rendering) -----------
 	return (
 		<>	
 			{/* Titre */}
@@ -80,16 +96,32 @@ function App() {
 							<p className="text-center text-muted">Aucune tâche pour le moment.</p>
 						) : (
 							<>
-								{toDos.map((toDo) => (
+								{toDos.map((todo) => (
 									// <span key={toDo.id}>{toDo.text}</span>
 
-									<div className="card" key={toDo.id}>
+									<div className="card" key={todo.id}>
 										<div className="card-body">
-											<h5 className="card-title">{toDo.text}</h5>
+											<div className="d-flex align-items-center gap-2">
+												<input
+													type="checkbox"
+													className="form-check-input"
+													checked={todo.completed}
+													onChange={() => toggleTodo(todo.id)}
+												/>
+												<h5
+													className="card-title mb-0"
+													style={{
+														textDecoration: todo.completed ? "line-through" : "none",
+														color: todo.completed ? "gray" : "inherit",
+													}}
+												>
+													{todo.text}
+												</h5>
+											</div>
 											<p className="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. A, voluptates.</p>
 											<div className="btn-group" role="group" aria-label="Basic example">
-												<button type="button" className="btn btn-primary" onClick={() => updateItem(toDo.id)}>Modifier</button>
-												<button type="button" className="btn btn-danger" onClick={() => deleteItem(toDo.id)}>Supprimer</button>
+												<button type="button" className="btn btn-primary" onClick={() => updateItem(todo.id)}>Modifier</button>
+												<button type="button" className="btn btn-danger" onClick={() => deleteItem(todo.id)}>Supprimer</button>
 											</div>
 										</div>
 									</div>
