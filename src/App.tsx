@@ -12,7 +12,7 @@ function App() {
 	}
 
 	// Logiques
-	// Ajouter un item
+	// Ajouter une tâche dans la liste
 	const addItem = () => {
 		const trimmed = textInput.trim();
     	if (!trimmed) return ;
@@ -26,17 +26,26 @@ function App() {
 		setTextInput("");
  	};
 
-	// Supprimer un item
+	// Supprimer une tâche
 	const deleteItem = (id:number)=> {
-     //doSomething
 		setToDos((toDos) => toDos.filter((todo) => todo.id !== id));
  	};
 
 
-	// Modifier un item
-	const updateItem = ()=> {
-     //doSomething
- 	}
+	// Modifier une ta^che
+	const updateItem = (id : number)=> {
+		const newText = prompt("Modifier la tâche :");
+
+		if (!newText || newText.trim() === "") return;
+
+		setToDos(
+			toDos.map((todo) =>
+			todo.id === id
+				? { ...todo, text: newText.trim() }
+				: todo
+			)
+		);
+ 	};
 
 	// Composants
 	return (
@@ -66,20 +75,7 @@ function App() {
 			<div>
 				<div className="row justify-content-center">
 					<div className="col-auto">
-						{/* Card */}
-						{/* <div className="card">
-							<div className="card-header">
-								Tâche à faire
-							</div>
-							<div className="card-body">
-								<h5 className="card-title">Nom de la tâche</h5>
-								<p className="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. A, voluptates.</p>
-								<div className="btn-group" role="group" aria-label="Basic example">
-									<button type="button" className="btn btn-primary">Modifier</button>
-									<button type="button" className="btn btn-danger">Supprimer</button>
-								</div>
-							</div>
-						</div> */}
+						{/* Si aucune tâche */}
 						{toDos.length === 0 ? (
 							<p className="text-center text-muted">Aucune tâche pour le moment.</p>
 						) : (
@@ -92,7 +88,7 @@ function App() {
 											<h5 className="card-title">{toDo.text}</h5>
 											<p className="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. A, voluptates.</p>
 											<div className="btn-group" role="group" aria-label="Basic example">
-												<button type="button" className="btn btn-primary">Modifier</button>
+												<button type="button" className="btn btn-primary" onClick={() => updateItem(toDo.id)}>Modifier</button>
 												<button type="button" className="btn btn-danger" onClick={() => deleteItem(toDo.id)}>Supprimer</button>
 											</div>
 										</div>
