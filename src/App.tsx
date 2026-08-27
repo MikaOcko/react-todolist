@@ -5,6 +5,7 @@ import { useState } from "react";
 interface ToDo {
 	id: number;
     text: string;
+	description: string,
 	completed: boolean;
 }
 
@@ -12,16 +13,20 @@ function App() {
 	// ---------- Variables----------
 	const [toDos, setToDos] = useState<ToDo[]>([]);
 	const [textInput, setTextInput] = useState<string>("");
+	const [descriptionInput, setDescriptionInput] = useState<string>("");
 
 	// ----------- Logiques ----------
 	// Ajouter une tâche dans la liste
 	const addItem = () => {
-		const trimmed = textInput.trim();
-    	if (!trimmed) return ;
+		const textTrimmed = textInput.trim();
+		const descriptionTrimmed = descriptionInput.trim();
+
+    	if (!textTrimmed || descriptionTrimmed) return ;
 
 		const newTodo: ToDo = {
 			id: Math.floor(Math.random() * 100),
-			text: trimmed,
+			text: textTrimmed,
+			description: descriptionTrimmed,
 			completed: false,
 		};
 
@@ -74,15 +79,26 @@ function App() {
 			<div>
 				<form className="row g-3 justify-content-center">
 					<div className="col-auto">
-						<input
-							type="text"
-							className="form-control"
-							placeholder="Ecrire la tâche"
-							value={textInput}
-							onChange={(e) => setTextInput(e.target.value)}
-						/>
-					</div>
-					<div className="col-auto">
+						<div>
+							<label htmlFor="" className="mb-2">Nom</label>
+							<input
+								type="text"
+								className="form-control mb-4"
+								placeholder="Ecrire un titre"
+								value={textInput}
+								onChange={(e) => setTextInput(e.target.value)}
+							/>
+						</div>
+						<div>
+							<label htmlFor="" className="mb-2">Description</label>
+							<input
+								type="text"
+								className="form-control mb-4"
+								placeholder="Décrire la tâche"
+								value={descriptionInput}
+								onChange={(e) => setDescriptionInput(e.target.value)}
+							/>
+						</div>
 						<button type="button" className="btn btn-success mb-3" onClick={addItem}>Ajouter</button> 
 					</div>
 				</form>
