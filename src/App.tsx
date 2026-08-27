@@ -15,16 +15,16 @@ function App() {
 	// Ajouter un item
 	const addItem = () => {
      //doSomething
-			const newTodo: ToDo = {
-				id: Math.floor(Math.random() * 100),
-				text: textInput.trim(),
-			};
+		const newTodo: ToDo = {
+			id: Math.floor(Math.random() * 100),
+			text: textInput.trim(),
+		};
 
-			setToDos([...toDos, newTodo]);
-			setTextInput("");
+		setToDos([...toDos, newTodo]);
+		setTextInput("");
 
-			console.log(newTodo);
-			console.log(toDos);
+		// console.log(newTodo);
+		// console.log(toDos);
  	}
 
 	// Supprimer un item
@@ -82,16 +82,24 @@ function App() {
 						{toDos.length === 0 ? (
 							<p className="text-center text-muted">Aucune tâche pour le moment.</p>
 						) : (
-							<ul>
+							<>
 								{toDos.map((toDo) => (
-									<li key={toDo.id}>{toDo.text}</li>
+									// <span key={toDo.id}>{toDo.text}</span>
+
+									<div className="card" key={toDo.id}>
+										<div className="card-body">
+											<h5 className="card-title">{toDo.text}</h5>
+											<p className="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. A, voluptates.</p>
+											<div className="btn-group" role="group" aria-label="Basic example">
+												<button type="button" className="btn btn-primary">Modifier</button>
+												<button type="button" className="btn btn-danger">Supprimer</button>
+											</div>
+										</div>
+									</div>
+
 								))}
-							</ul>
+							</>
 						)}
-
-
-
-
 					</div>
 				</div>
 			</div>
