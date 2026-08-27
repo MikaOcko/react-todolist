@@ -14,23 +14,24 @@ function App() {
 	// Logiques
 	// Ajouter un item
 	const addItem = () => {
-     //doSomething
+		const trimmed = textInput.trim();
+    	if (!trimmed) return ;
+
 		const newTodo: ToDo = {
 			id: Math.floor(Math.random() * 100),
-			text: textInput.trim(),
+			text: trimmed,
 		};
 
 		setToDos([...toDos, newTodo]);
 		setTextInput("");
-
-		// console.log(newTodo);
-		// console.log(toDos);
- 	}
+ 	};
 
 	// Supprimer un item
-	const deleteItem = ()=> {
+	const deleteItem = (id:number)=> {
      //doSomething
- 	}
+		setToDos((toDos) => toDos.filter((todo) => todo.id !== id));
+ 	};
+
 
 	// Modifier un item
 	const updateItem = ()=> {
@@ -92,7 +93,7 @@ function App() {
 											<p className="card-text">Lorem ipsum dolor sit amet consectetur adipisicing elit. A, voluptates.</p>
 											<div className="btn-group" role="group" aria-label="Basic example">
 												<button type="button" className="btn btn-primary">Modifier</button>
-												<button type="button" className="btn btn-danger">Supprimer</button>
+												<button type="button" className="btn btn-danger" onClick={() => deleteItem(toDo.id)}>Supprimer</button>
 											</div>
 										</div>
 									</div>
